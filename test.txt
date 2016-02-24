@@ -1,0 +1,30 @@
+# -*- coding: utf8 -*-
+from selenium import webdriver
+import time
+B = webdriver.Firefox()
+B.get('http://172.16.8.231:12123/sys/m/login')
+print 'ä¯ÀÀÆ÷×î´ó»¯'
+B.maximize_window()
+B.find_element_by_id('username').send_keys('zhoujn')
+B.find_element_by_id('password').send_keys('000000')
+B.find_element_by_id('captcha').send_keys('0000')
+B.find_element_by_id('login-btn').click()
+time.sleep(15)
+try:
+    B.find_element_by_id('poptip-submit').is_displayed()
+except:
+    print "µÇÂ¼Ê§°Ü"
+else:
+    print "µÇÂ¼³É¹¦"
+B.find_element_by_id('poptip-submit').click()
+time.sleep(5)
+B.find_element_by_class_name('icon-mobile-phone').click()
+
+
+
+
+
+
+
+
+
