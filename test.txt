@@ -1,24 +1,56 @@
 # -*- coding: utf8 -*-
 from selenium import webdriver
 import time
-B = webdriver.Firefox()
-B.get('http://172.16.8.231:12123/sys/m/login')
-print '��������'
-B.maximize_window()
-B.find_element_by_id('username').send_keys('zhoujn')
-B.find_element_by_id('password').send_keys('000000')
-B.find_element_by_id('captcha').send_keys('0000')
-B.find_element_by_id('login-btn').click()
-time.sleep(15)
-try:
-    B.find_element_by_id('poptip-submit').is_displayed()
-except:
-    print "��¼ʧ��"
-else:
-    print "��¼�ɹ�"
-B.find_element_by_id('poptip-submit').click()
-time.sleep(5)
-B.find_element_by_class_name('icon-mobile-phone').click()
+import datetime
+import traceback
+import os
+import logging
+
+
+def login(browser):
+    url = 'http://172.16.8.231:12123/sys/m/login'
+    browser.get(url)
+    try:
+        # 输入账号密码和验证码
+        browser.find_element_by_id('username').send_keys('zhoujn')
+        browser.find_element_by_id('password').send_keys('000000')
+        browser.find_element_by_id('captcha').send_keys('0000')
+        time.sleep(2)
+        # 点击登录
+        browser.find_element_by_id('login-btn').click()
+        time.sleep(10)
+        # 点击IP异常弹出框的确定按钮
+        browser.find_element_by_id('poptip-submit').click()
+        time.sleep(2)
+
+        # 验证登录成功的URL
+        currUrl = browser.current_url
+        if currUrl == 'http://172.16.8.231:12123/sys/m/home/':
+            print u'登录成功'
+        else:
+            print u'登录失败'
+    except:
+        print u'登录失败'
+        WriteLog()
+# 写错误日志
+
+
+def WriteLog():
+    basename = os.path.splitext(os.path.basename(__file__))[0]
+    logfile = basename+'-'+datetime.datetime.now().strftime('%Y%m%d%H%M%S')+'.log'
+    logging.basicConfig(filebname = logfile)
+    s = traceback.format_exc()
+    logging.error(s)
+    browser.get_screenshot_as_file('./'+logfile+'-screenshot_error.png')
+
+if __name__ == '__main__':
+    browser = webdriver.Firefox()
+    login(browser)
+    browser.quit()
+
+
+
+
 
 
 
