@@ -1,0 +1,102 @@
+# -*-coding:utf-8-*-
+import unittest
+from time import sleep
+from selenium import webdriver
+
+
+class Login(unittest.TestCase):
+	# 基本配置信息
+	def setUp(self):
+		self.driver = webdriver.Firefox()  # 启动火狐
+		self.driver.get('http://172.16.11.75:8080/front/user/toLogin')  # 登录页面
+		self.url = 'http://172.16.11.75:8080/front/index/toIndex'  # 安顺出行首页
+		self.url3 = 'http://172.16.11.75:8080/front/user/toRegister'  # 注册页面
+		self.url4 = 'http://172.16.11.75:8080/front/user/toFindPassword'  # 忘记密码页面
+		self.number = '13511100011'  # 正确手机号码参数
+		self.errornumber = '13111111111'  # 错误手机号码
+	# 登录信息正确
+
+	def test_1rightinfo(self):
+		self.driver.find_element_by_name('mobile').send_keys(self.number)
+		self.driver.find_element_by_name('password').send_keys('admin123')
+		self.driver.find_element_by_id('loginBtn').click()
+		sleep(1)
+		try:
+			self.url1 = self.driver.current_url
+			self.assertEqual(self.url1, self.url)
+			print u'用例1：输入正确登录信息，登录成功，跳转到首页：', self.url1
+		except:
+			print u'用例1：登录失败'
+	# 输入错误手机号码
+
+	def test_2errornumber(self):
+		self.driver.find_element_by_name('mobile').send_keys(self.errornumber)
+		self.driver.find_element_by_name('password').send_keys('admin123')
+		self.driver.find_element_by_id('loginBtn').click()
+		try:
+			self.text = self.driver.find_element_by_id('tipContent').text
+			self.assertEqual(u'账户或密码错误', self.text)
+			print u'用例2：输入错误手机号码13111111111，给出错误提示：', self.text
+		except:
+			print u'用例2：出现BUG'
+	# 空手机号码
+
+	def test_3nullnumber(self):
+		self.driver.find_element_by_name('mobile').send_keys('')
+		self.driver.find_element_by_name('password').send_keys('admin123')
+		self.driver.find_element_by_id('loginBtn').click()
+		try:
+			self.text = self.driver.find_element_by_id('tipContent').text
+			self.assertEqual(u'请填写手机号码', self.text)
+			print u'用例3：手机号码输入为空，给出错误提示：', self.text
+		except:
+			print u'用例3：出现BUG'
+	# 错误密码
+
+	def test_4errorpwd(self):
+		self.driver.find_element_by_name('mobile').send_keys(self.number)
+		self.driver.find_element_by_name('password').send_keys('admin125')
+		self.driver.find_element_by_id('loginBtn').click()
+		sleep(1)
+		try:
+			self.text = self.driver.find_element_by_id('tipContent').text
+			self.assertEqual(u'密码错误', self.text)
+			print u'用例4：密码输入错误，给出错误提示：', self.text
+		except:
+			print u'用例4：出现BUG'
+	# 空密码
+
+	def test_5nullpwd(self):
+		self.driver.find_element_by_name('mobile').send_keys(self.number)
+		self.driver.find_element_by_name('password').send_keys('')
+		self.driver.find_element_by_id('loginBtn').click()
+		try:
+			self.text = self.driver.find_element_by_id('tipContent').text
+			self.assertEqual(u'请输入密码' ,self.text)
+			print u'用例5：密码输入为空，给出错误提示：', self.text
+		except:
+			print u'用例5：出现BUG'
+	# 测试注册按钮
+
+	def test_6registerbutton(self):
+		self.driver.find_element_by_partial_link_text(u'注册账号').click()
+		sleep(1)
+		try:
+			self.url2 = self.driver.current_url
+			self.assertEqual(self.url2, self.url3)
+			print u'用例6：注册按钮点击跳转成功',self.url2
+		except:
+			print u'用例6,：出现BUG'
+	# 忘记密码按钮测试
+
+	def test_7forgetpwdbutton(self):
+		self.driver.find_element_by_partial_link_text(u'忘记密码').click()
+		sleep(1)
+		try:
+			self.url5 = self.driver.current_url
+			self.assertEqual(self.url5, self.url4)
+			print u'用例7：忘记密码按钮点击跳转成功', self.url5
+		except:
+			print u'用例7,：出现BUG'
+if __name__ == '__main__':
+	unittest.main
