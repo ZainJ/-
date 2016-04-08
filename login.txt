@@ -8,10 +8,10 @@ class Login(unittest.TestCase):
 	# 基本配置信息
 	def setUp(self):
 		self.driver = webdriver.Firefox()  # 启动火狐
-		self.driver.get('http://172.16.11.75:8080/front/user/toLogin')  # 登录页面
-		self.url = 'http://172.16.11.75:8080/front/index/toIndex'  # 安顺出行首页
-		self.url3 = 'http://172.16.11.75:8080/front/user/toRegister'  # 注册页面
-		self.url4 = 'http://172.16.11.75:8080/front/user/toFindPassword'  # 忘记密码页面
+		self.driver.get('')  # 登录页面
+		self.url = ''  # 安顺出行首页
+		self.url3 = ''  # 注册页面
+		self.url4 = '  # 忘记密码页面
 		self.number = '13511100011'  # 正确手机号码参数
 		self.errornumber = '13111111111'  # 错误手机号码
 	# 登录信息正确
