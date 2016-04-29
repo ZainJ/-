@@ -1,0 +1,26 @@
+# -*- coding: utf8 -*-
+from selenium import webdriver
+import xlrd
+from time import sleep
+import unittest
+url = ''  # 安顺出行首页
+xlsfile = r'F:\data.xlsx'  # 获取文件路径
+data = xlrd.open_workbook(xlsfile)  # 打开文件
+sheetname = data.sheet_by_index(0)  # 获取工作表
+col_data =sheetname.col_values(0)  # 获取第一列数据
+count = 0
+for a in col_data:
+	try:
+		driver = webdriver.Firefox()  # 启动火狐
+		driver.get('')  # 注册页面
+		driver.find_element_by_name('mobile').send_keys(a)  # 输入手机号码
+		driver.find_element_by_name('password').send_keys('12345678')  # 输入密码
+		driver.find_element_by_name('comfirmPassword').send_keys('12345678') # 确认密码
+		driver.find_element_by_name('validCode').send_keys('123456')  # 验证码
+		driver.find_element_by_id('checkBoxAllow').click()  # 勾选同意服务协议
+		driver.find_element_by_id('registerBtn').click()  # 点击注册按钮
+		count +=1
+		print count
+		driver.quit()
+	except:
+			driver.quit()
