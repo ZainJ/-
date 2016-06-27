@@ -1,0 +1,18 @@
+def initlog():
+    logger = None
+    logger = logging.getLogger()
+    datefmt = "%Y-%m-%d %H:%M:%S"
+    format_str = "[%(asctime)s]: %(levelname)s - %(message)s"
+    formatter = logging.Formatter(format_str,datefmt)
+    stream_handler = logging.StreamHandler()
+    logger.setLevel(logging.INFO)
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
+
+    return [logger,stream_handler]
+#log函数
+def logger_info(err_msg,level=logging.INFO):
+    logger,stream_handler = initlog()
+    logger.info(err_msg)
+    stream_handler.flush()#确保所有的日志输出已经被刷新
+    logger.removeHandler( stream_handler )#去掉log继承
