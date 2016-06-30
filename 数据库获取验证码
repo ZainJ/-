@@ -1,0 +1,11 @@
+# -*- coding:utf-8 -*-
+import pymysql
+conn = pymysql.connect(host, port user=, password=, db=')
+cur = conn.cursor()
+cur.execute('SELECT send_content from tb_mobile_send_record where type="1" and mobile="15920155301" \
+and create_time=(select max(create_time) from tb_mobile_send_record where \
+type="1" and mobile="15920155301");')
+data = cur.fetchall()
+print data
+cur.close()
+conn.close()
