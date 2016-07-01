@@ -1,0 +1,43 @@
+#encoding=utf-8
+#针对Python中用到的selenium公共方法做封装
+class Webdriver:
+    def click(self,webdriver=‘driver‘,method=‘Id‘,path=‘‘):
+        ‘method value have name/id/xpath/class;webdriver is the driver you use‘
+        if path==‘‘:
+            print ‘you must input the xpath‘
+        else:
+            if method==‘Id‘ or method==‘id‘:#根据控件元素的ID属性定位元素，速度最快
+                print ‘the method you useing is Id‘
+                elem=webdriver.find_element_by_id(path)
+                elem.click()
+            elif method==‘name‘ or method==‘Name‘:#根据控件元素的name属性定位元素，速度次之
+                elem=webdriver.find_element_by_name(path)
+                elem.click()
+            elif method==‘class‘ or method==‘Class‘:#根据控件元素的class属性定位元素，速度稍慢
+                elem=webdriver.find_element_by_class_name(path)
+                elem.click()
+            elif method==‘xpath‘ or method==‘Xpath‘:#通过xpath方式定位元素，速度最慢
+                elem=webdriver.find_element_by_xpath(path)
+                elem.click()
+    def text_input(self,webdriver=‘driver‘,method=‘Id‘,path=‘‘,key=‘‘):
+        ‘method value have name/id/xpath/class;webdriver is the driver you use‘
+        if path==‘‘:
+            print ‘you must input the xpath‘
+        else:
+            if method==‘Id‘ or method==‘id‘:#根据控件元素的ID属性定位元素，速度最快
+                print ‘the method you useing is Id‘
+                elem=webdriver.find_element_by_id(path)
+                elem.clear()
+                elem.send_keys(key)
+            elif method==‘name‘ or method==‘Name‘:#根据控件元素的name属性定位元素，速度次之
+                elem=webdriver.find_element_by_name(path)
+                elem.clear()
+                elem.send_keys(key)
+            elif method==‘class‘ or method==‘Class‘:#根据控件元素的class属性定位元素，速度稍慢
+                elem=webdriver.find_element_by_class_name(path)
+                elem.clear()
+                elem.send_keys(key)
+            elif method==‘xpath‘ or method==‘Xpath‘:#通过xpath方式定位元素，速度最慢
+                elem=webdriver.find_element_by_xpath(path)
+                elem.clear()
+                elem.send_keys(key)
