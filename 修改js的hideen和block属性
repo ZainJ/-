@@ -1,5 +1,5 @@
 
-def upload():
+1.def upload():
     # 上传图片是个坑需要js调整css里的display，可以才谷歌控制台试验是否可以修改成功document.getElementById('userLogo').type = 'text'
     # 上传操作要在修改imput属性之后进行上传
     driver.implicitly_wait(1)
@@ -7,3 +7,20 @@ def upload():
     driver.execute_script(js_card)
     driver.find_element_by_name('upload_card').send_keys(upload_path())
     time.sleep(3)
+
+2.# -*- coding:utf-8 -*-
+from selenium import webdriver
+from time import sleep
+driver = webdriver.Firefox()
+driver.get('http://m.ans66.com/user/toLogin?backUrl=/index/toMeIndex')
+driver.find_element_by_name('mobile').send_keys('15920155301')
+driver.find_element_by_name('password').send_keys('123456')
+driver.find_element_by_id('loginBtn').click()
+driver.get('http://m.ans66.com/dataManage/toDataManageIndex')
+#js = '$("[name=\'upload_card\']").show()    '
+#driver.execute_script("document.getElementById('userLogo').type = 'file'")
+#driver.find_element_by_id('userLogo').send_keys('F:\\u=1977993223,979889922&fm=21&gp=0.jpg')
+
+js = "$('#fileUserLogo').parent().css('visibility', 'visible');"
+driver.execute_script(js)
+driver.find_element_by_id('fileUserLogo').send_keys('F:\u=767910455,2741934660&fm=21&gp=0.jpg')
