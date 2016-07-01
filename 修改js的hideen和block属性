@@ -1,6 +1,7 @@
 
 def upload():
-    # 上传图片是个坑需要js调整css里的display
+    # 上传图片是个坑需要js调整css里的display，可以才谷歌控制台试验是否可以修改成功document.getElementById('userLogo').type = 'text'
+    # 上传操作要在修改imput属性之后进行上传
     driver.implicitly_wait(1)
     js_card = '$("[name=\'upload_card\']").show()'
     driver.execute_script(js_card)
