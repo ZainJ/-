@@ -1,0 +1,8 @@
+
+def upload():
+    # 上传图片是个坑需要js调整css里的display
+    driver.implicitly_wait(1)
+    js_card = '$("[name=\'upload_card\']").show()'
+    driver.execute_script(js_card)
+    driver.find_element_by_name('upload_card').send_keys(upload_path())
+    time.sleep(3)
