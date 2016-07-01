@@ -1,0 +1,282 @@
+1.判断元素对象是否存在：
+
+  public  boolean isElementExist(By by){
+
+         try{
+
+              driver.findElement(by);
+
+              return true;
+
+            }catch(NoSuchElementException e){
+
+               return false;
+
+            }
+
+  }
+
+2.获取元素
+
+  public WebElement findById(String id){
+
+    WebElement element=null;
+
+    if(isElementExist(By.id(id)){
+
+        element=driver.findElement(By.id(id));
+
+    }
+
+    return element;
+
+  }
+
+3.元素组是否存在
+
+ public boolean elementsExists(By by){
+
+   return (driver.findElements(by).size()>0?true:false);
+
+ }
+
+4.从某组元素组中获取需要的某个元素
+
+public WebElement findbyElements(By by,int index){
+
+  WebElement element=null;
+
+  if(elementsExists(by)){
+
+     element= driver.findElements(by).get(index);
+
+ }
+
+ return element;
+
+}
+
+5.弹出框判断
+
+ public boolean isAlertPresent(){
+
+    try{
+
+       alert=driver.switchTo().alert();
+
+       return true;
+
+      }catch(NoAlertPresentException e){
+
+           return false;
+
+      }
+
+ }
+
+public void acceptAlert(){
+
+    if(isAlertPresent()){
+
+       alert.accept();
+
+    }
+
+ }
+
+public void dismissAlert(){
+
+  if(isAlertPresent()){
+
+    alert.dismiss();
+
+ }
+
+}
+
+public String getAlertText(){
+
+  String text="";
+
+   if(isAlertPresent()){
+
+        text=alert.getText();
+
+   }else {
+
+  }
+
+  return text;
+
+}
+
+6.Windows操作
+
+public void switchToWindow(String windowTitle){
+
+    Set<String>windowhandles=driver.getWindowHandles();
+
+   for(String handle:windowhandles){
+
+         driver.switchTo().window(handle);
+
+        String title=driver.getTitle();
+
+       if(title.equals(windowTitle))
+
+           break;    
+
+}
+
+7.Frame操作：
+
+  public void switchToFrame(String frameId){
+
+     driver.switchTo().frame(frameId);
+
+ }
+
+public void switchToFrame(int index){
+
+   driver.switchTo().frame(index)
+
+}
+
+public void switchToFrame(WebElement element){
+
+    driver.switchTo().frame(element);
+
+}
+
+8,UI标志
+
+public WebElement findUI(int index){
+
+  WebElement element=null;
+
+  if(elementsExists(By.tagName("ul")){
+
+     element=driver.findElements(By.tagName("ul")).get(index);
+
+  }
+
+return element;
+
+}
+
+9.Li标志
+
+public List<WebElement>getLis(int index){
+
+  try{
+
+        return findUi(index).findElements(By.xpath("./li"));
+
+     }catch(Exception e){
+
+          return new ArrayList<WebElement>();
+
+    }
+
+}
+
+public WebElement getLi(int parentIndext,int index){
+
+  return getLis(parentIndext).get(index);
+
+}
+
+public List<String>getLiText(int index){
+
+  ArrayList<String>liTexts=new ArrayList<String>();
+
+  for(WebElement element: getLis(index)){
+
+       liTexts.add(element.getText());
+
+ }
+
+  return liTexts;
+
+}
+
+10.支持JQuery函数
+
+public void runScrpt(String script){
+
+   this.injectJQueryIfNeed();
+
+  JavascriptExecutor js=(JavascriptExecutor)driver;
+
+   js.executeScript(script);
+
+}
+
+public injectJQueryIfNeed(){
+
+   if(!this.jQueryLoaded()){
+
+        injectjQuery();
+
+   }
+
+}
+
+public Boolean  jQueryLoaded(){
+
+   Boolean isLoaded=false;
+
+   JavascriptExecutor js=(JavascriptExecutor)driver;
+
+    try{
+
+       isLoaded=js.executeScript("return "+"jQuery()!=null");
+
+       }catch(WebDriverExeception e){
+
+            return false;
+
+     }
+
+   return isLoaded;
+
+}
+
+public void injectjQuery(){
+
+   JavascriptExecutor js=(JavascriptExecutor)driver;
+
+   js.executeScript(" var headId= "+"document.getElementsByTagName(\"head\")[0];"
+
+  +" var newScript= document.createElement('script');"
+
+  +" newScript.type='text/javascript' ;"+ "newScript.src="
+
+  +" 'http://ajax.googleleapis.com/ajax"
+
+  +"libs/jquery/1.7.2/jquery.min.js' ;");
+
+}
+
+
+11.在特定的时间中是否出现element
+
+publc boolean elementExists(By by,int seconds){
+
+    long start=System.currentTimeMillis();  
+
+   boolean isExist=false;
+
+   setElementLocateTimeout(1);
+
+   while(!eExst&&(System.currentTimeMillis()-start<seconds*1000)){
+
+          isExist=driver.getElements(by).size>0;
+
+   }
+
+  setElementLocateTimeout(maxWait);
+
+  return isExist;
+
+}
