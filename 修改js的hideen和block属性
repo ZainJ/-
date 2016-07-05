@@ -22,5 +22,6 @@ driver.get('http://m.ans66.com/dataManage/toDataManageIndex')
 #driver.find_element_by_id('userLogo').send_keys('F:\\u=1977993223,979889922&fm=21&gp=0.jpg')
 
 js = "$('#fileUserLogo').parent().css('visibility', 'visible');"
+js = "document.querySelector(".change_img div").style.visibility='visible';"这个js也可以修改父属性
 driver.execute_script(js)
 driver.find_element_by_id('fileUserLogo').send_keys('F:\u=767910455,2741934660&fm=21&gp=0.jpg')
