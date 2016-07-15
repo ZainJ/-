@@ -1,0 +1,29 @@
+# -*- coding: utf8 -*-
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from time import sleep
+driver = webdriver.Firefox()
+driver.get('http://117.106.85.19/Lists/SchoolNews/NewForm.aspx?Source=http%3A%2F%2F117%2E106%2E85%2E19%2FLists%2FSchoolNews%2FAllItems%2Easpx&RootFolder=')
+driver.find_element_by_xpath('//*[@id="MainBody_dd326876-8836-4ee3-bbd8-a1e23cd7fda9_$TextField_inplacerte"]').click()
+sleep(1)
+driver.find_element_by_xpath('//*[@id="Ribbon.EditingTools.CPInsert-title"]/a/span[1]').click()
+sleep(1)
+driver.find_element_by_xpath('//*[@id="Ribbon.EditingTools.CPInsert.Media.Image-Large"]/span[2]').click()
+driver.find_element_by_xpath('//*[@id="Ribbon.EditingTools.CPInsert.Media.Image.Menu.Image.FromComputer-Menu"]/span[3]').click()
+sleep(3)
+driver.switch_to_frame(1)
+driver.find_element_by_id('ctl00_PlaceHolderMain_UploadDocumentSection_ctl05_InputFile').send_keys('F:\\aa.jpg')
+
+driver.find_element_by_id('ctl00_PlaceHolderMain_ctl03_RptControls_btnOK').click()
+sleep(10)
+driver.find_element_by_xpath('//*[@id="MainBody_dd326876-8836-4ee3-bbd8-a1e23cd7fda9_$TextField_inplacerte"]').send_keys(Keys.ENTER)
+sleep(1)
+driver.find_element_by_xpath('//*[@id="Ribbon.EditingTools.CPInsert-title"]/a/span[1]').click()
+sleep(1)
+driver.find_element_by_xpath('//*[@id="Ribbon.EditingTools.CPInsert.Media.Image-Large"]/span[2]').click()
+driver.find_element_by_xpath('//*[@id="Ribbon.EditingTools.CPInsert.Media.Image.Menu.Image.FromComputer-Menu"]/span[3]').click()
+sleep(3)
+driver.switch_to_frame(1)
+driver.find_element_by_id('ctl00_PlaceHolderMain_UploadDocumentSection_ctl05_InputFile').send_keys('F:\\bb.jpg')
+
+driver.find_element_by_id('ctl00_PlaceHolderMain_ctl03_RptControls_btnOK').click()
