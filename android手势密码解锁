@@ -13,3 +13,4 @@ print "启动APP成功"
 sleep(5)
 # 九宫格手势密码解锁，用的是相对坐标进行滑动，press用的是绝对坐标，利用开发者模式可以得到坐标，后面move_to用的是相对坐标
 TouchAction(driver).press(x=200, y=670).wait(ms=500).move_to(x=370, y=0).wait(ms=500).move_to(x=0, y=370).wait(ms=500).move_to(x=0, y=370).release().perform()
+#过程中引用错了包导致浪费了大半天时间，报错首先排查包是否引用错误
