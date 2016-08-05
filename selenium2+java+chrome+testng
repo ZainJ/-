@@ -1,0 +1,45 @@
+package test;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.*;
+import org.testng.Assert;
+
+
+public class TestClass {
+
+    WebDriver driver;
+    @Test
+    public void helloWorld() throws Exception {        
+        //如果火狐浏览器没有默认安装在C盘，需要制定其路径
+        System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe"); 
+        driver = new ChromeDriver();
+        driver.get("http://www.baidu.com/");
+        
+        driver.manage().window().maximize();
+        
+        WebElement txtbox = driver.findElement(By.name("wd"));
+        txtbox.sendKeys("Glen");
+        
+        WebElement btn = driver.findElement(By.id("su"));
+        btn.click();
+//       driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+       Thread.sleep(1000);
+        String expectedTitle = "Glen_百度搜索";
+        String actualTitle = driver.getTitle();
+        Assert.assertEquals(actualTitle,expectedTitle);            
+    }
+    
+    @AfterTest
+    public void tearDown(){
+        driver.quit();
+    }
+
+}
