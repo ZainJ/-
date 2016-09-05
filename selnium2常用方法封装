@@ -1,282 +1,174 @@
-1.判断元素对象是否存在：
-
-  public  boolean isElementExist(By by){
-
-         try{
-
-              driver.findElement(by);
-
-              return true;
-
-            }catch(NoSuchElementException e){
-
-               return false;
-
-            }
-
-  }
-
-2.获取元素
-
-  public WebElement findById(String id){
-
-    WebElement element=null;
-
-    if(isElementExist(By.id(id)){
-
-        element=driver.findElement(By.id(id));
-
-    }
-
-    return element;
-
-  }
-
-3.元素组是否存在
-
- public boolean elementsExists(By by){
-
-   return (driver.findElements(by).size()>0?true:false);
-
- }
-
-4.从某组元素组中获取需要的某个元素
-
-public WebElement findbyElements(By by,int index){
-
-  WebElement element=null;
-
-  if(elementsExists(by)){
-
-     element= driver.findElements(by).get(index);
-
- }
-
- return element;
-
-}
-
-5.弹出框判断
-
- public boolean isAlertPresent(){
-
-    try{
-
-       alert=driver.switchTo().alert();
-
-       return true;
-
-      }catch(NoAlertPresentException e){
-
-           return false;
-
-      }
-
- }
-
-public void acceptAlert(){
-
-    if(isAlertPresent()){
-
-       alert.accept();
-
-    }
-
- }
-
-public void dismissAlert(){
-
-  if(isAlertPresent()){
-
-    alert.dismiss();
-
- }
-
-}
-
-public String getAlertText(){
-
-  String text="";
-
-   if(isAlertPresent()){
-
-        text=alert.getText();
-
-   }else {
-
-  }
-
-  return text;
-
-}
-
-6.Windows操作
-
-public void switchToWindow(String windowTitle){
-
-    Set<String>windowhandles=driver.getWindowHandles();
-
-   for(String handle:windowhandles){
-
-         driver.switchTo().window(handle);
-
-        String title=driver.getTitle();
-
-       if(title.equals(windowTitle))
-
-           break;    
-
-}
-
-7.Frame操作：
-
-  public void switchToFrame(String frameId){
-
-     driver.switchTo().frame(frameId);
-
- }
-
-public void switchToFrame(int index){
-
-   driver.switchTo().frame(index)
-
-}
-
-public void switchToFrame(WebElement element){
-
-    driver.switchTo().frame(element);
-
-}
-
-8,UI标志
-
-public WebElement findUI(int index){
-
-  WebElement element=null;
-
-  if(elementsExists(By.tagName("ul")){
-
-     element=driver.findElements(By.tagName("ul")).get(index);
-
-  }
-
-return element;
-
-}
-
-9.Li标志
-
-public List<WebElement>getLis(int index){
-
-  try{
-
-        return findUi(index).findElements(By.xpath("./li"));
-
-     }catch(Exception e){
-
-          return new ArrayList<WebElement>();
-
-    }
-
-}
-
-public WebElement getLi(int parentIndext,int index){
-
-  return getLis(parentIndext).get(index);
-
-}
-
-public List<String>getLiText(int index){
-
-  ArrayList<String>liTexts=new ArrayList<String>();
-
-  for(WebElement element: getLis(index)){
-
-       liTexts.add(element.getText());
-
- }
-
-  return liTexts;
-
-}
-
-10.支持JQuery函数
-
-public void runScrpt(String script){
-
-   this.injectJQueryIfNeed();
-
-  JavascriptExecutor js=(JavascriptExecutor)driver;
-
-   js.executeScript(script);
-
-}
-
-public injectJQueryIfNeed(){
-
-   if(!this.jQueryLoaded()){
-
-        injectjQuery();
-
-   }
-
-}
-
-public Boolean  jQueryLoaded(){
-
-   Boolean isLoaded=false;
-
-   JavascriptExecutor js=(JavascriptExecutor)driver;
-
-    try{
-
-       isLoaded=js.executeScript("return "+"jQuery()!=null");
-
-       }catch(WebDriverExeception e){
-
-            return false;
-
-     }
-
-   return isLoaded;
-
-}
-
-public void injectjQuery(){
-
-   JavascriptExecutor js=(JavascriptExecutor)driver;
-
-   js.executeScript(" var headId= "+"document.getElementsByTagName(\"head\")[0];"
-
-  +" var newScript= document.createElement('script');"
-
-  +" newScript.type='text/javascript' ;"+ "newScript.src="
-
-  +" 'http://ajax.googleleapis.com/ajax"
-
-  +"libs/jquery/1.7.2/jquery.min.js' ;");
-
-}
-
-
-11.在特定的时间中是否出现element
-
-publc boolean elementExists(By by,int seconds){
-
-    long start=System.currentTimeMillis();  
-
-   boolean isExist=false;
-
-   setElementLocateTimeout(1);
-
-   while(!eExst&&(System.currentTimeMillis()-start<seconds*1000)){
-
-          isExist=driver.getElements(by).size>0;
-
-   }
-
-  setElementLocateTimeout(maxWait);
-
-  return isExist;
-
-}
+from selenium import webdriver
+from data.logInput import logger_info
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoAlertPresentException
+from selenium.common.exceptions import NoSuchAttributeException
+from selenium.common.exceptions import NoSuchFrameException
+from selenium.common.exceptions import NoSuchWindowException
+from selenium.common.exceptions import UnexpectedAlertPresentException
+from selenium.common.exceptions import UnexpectedTagNameException
+from selenium.common.exceptions import TimeoutException
+
+
+class WebdriverOperating():
+
+    def __init__(self):
+        self.driver = webdriver.Chrome('C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe')
+        self.flag = True
+    # 打开URL
+
+    def openUrl(self, url):
+        try:
+            self.driver.get(url)
+        except:
+            logger_info('网页打开失败，请查明原因')
+
+    # 关闭url
+
+    def closeUrl(self):
+        try:
+            self.driver.quit()
+        except:
+            logger_info('关闭网页失败，请查明原因')
+
+    # 执行JS
+
+    def excuteJS(self, js):
+        try:
+            self.driver.execute_script(js)
+        except:
+            logger_info('调用JS失败，请查明原因')
+
+    # 判断元素对象是否存在
+
+    def isEleExit(self, identifyby, locatorString):
+        flag = False
+        try:
+            if identifyby == 'id':
+                self.driver.find_element_by_id(locatorString)
+                flag = True
+            elif identifyby == 'name':
+                self.driver.find_element_by_name(locatorString)
+                flag = True
+            elif identifyby == 'css':
+                self.driver.find_element_by_css_selector(locatorString)
+                flag = True
+            elif identifyby == 'classname':
+                self.driver.find_element_by_class_name(locatorString)
+                flag = True
+            elif identifyby == 'xpath':
+                self.driver.find_element_by_xpath(locatorString)
+                flag = True
+        except NoSuchElementException:
+            logger_info('未找到元素')
+        return flag
+
+    # 智能等待元素出现，在规定时间内未出现得报异常
+
+    def intelligentWait(self, identifyby, locatorString, secs):
+        flag =False
+        try:
+            if identifyby == 'id':
+                WebDriverWait(self.driver,secs).until(EC.presence_of_element_located((self.driver.find_element_by_id(locatorString))))
+                flag =True
+
+            elif identifyby == 'name':
+                WebDriverWait(self.driver,secs).until(EC.presence_of_element_located((self.driver.find_element_by_name(locatorString))))
+                flag = True
+
+            elif identifyby == 'css':
+                WebDriverWait(self.driver,secs).until(EC.presence_of_element_located((self.driver.find_element_by_css_selector(locatorString))))
+                flag =True
+
+            elif identifyby == 'classname':
+                WebDriverWait(self.driver,secs).until(EC.presence_of_element_located((self.driver.find_element_by_class_name(locatorString))))
+                flag =True
+
+            elif identifyby == 'xpath':
+                WebDriverWait(self.driver,secs).until(EC.presence_of_element_located((self.driver.find_element_by_xpath(locatorString))))
+                flag =True
+        except TimeoutException:
+            logger_info('等待超时')
+        return flag
+    # 根据id定位输入内容
+
+    def inputById(self, id, value):
+            try:
+                self.driver.find_element_by_id(id).send_keys(value)
+            except NoSuchElementException:
+                logger_info('ID元素无法定位，或是无法输入值')
+                return False
+    # 根据name定位输入内容
+
+    def inputByName(self, name, value):
+            try:
+                self.driver.find_element_by_name(name).send_keys(value)
+            except NoSuchElementException:
+                logger_info('NAME元素无法定位，或是无法输入值')
+                return False
+    # 根据css定位输入内容
+
+    def inputByCss(self, css, value):
+            try:
+                self.driver.find_element_by_css_selector(css).send_keys(value)
+            except NoSuchElementException:
+                logger_info('CSS元素无法定位，或是无法输入值')
+                return False
+    # 根据classname定位输入内容
+
+    def inputByClassName(self, classname, value):
+            try:
+                self.driver.find_element_by_class_name(classname).send_keys(value)
+            except NoSuchElementException:
+                logger_info('CSS元素无法定位，或是无法输入值')
+                return False
+    # 根据xpath定位输入内容
+
+    def inputByXpath(self, xpath, value):
+            try:
+                self.driver.find_element_by_xpath(xpath).send_keys(value)
+            except NoSuchElementException:
+                logger_info('CSS元素无法定位，或是无法输入值')
+                return False
+    # 根据ID属性定位点击
+
+    def clickById(self,id):
+        try:
+            self.driver.find_element_by_id(id).click()
+        except NoSuchElementException:
+            logger_info('无法点击ID属性元素，请查明原因')
+            return False
+    # 根据name属性定位点击
+
+    def clickByName(self,name):
+        try:
+            self.driver.find_element_by_name(name).click()
+        except NoSuchElementException:
+            logger_info('无法点击NAME属性元素，请查明原因')
+            return False
+    # 根据css属性定位点击
+
+    def clickByCss(self,css):
+        try:
+            self.driver.find_element_by_css_selector(css).click()
+        except NoSuchElementException:
+            logger_info('无法点击CSS属性元素，请查明原因')
+            return False
+    # 根据classname属性定位点击
+
+    def clickByClassName(self,classname):
+        try:
+            self.driver.find_element_by_class_name(classname).click()
+        except NoSuchElementException:
+            logger_info('无法点击CLASSNAME属性元素，请查明原因')
+            return False
+    # 根据xpath属性定位点击
+
+    def clickByXpath(self,xpath):
+        try:
+            self.driver.find_element_by_xpath(xpath).click()
+        except NoSuchElementException:
+            logger_info('无法点击XPATH属性元素，请查明原因')
+            return False
