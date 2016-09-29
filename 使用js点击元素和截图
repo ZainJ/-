@@ -1,0 +1,8 @@
+js = 'document.getElementsByTagName("li")[1].click()'
+driver.execute_script(js)
+#截图
+#每次执行前删除上一次截图
+rootdir = 'D:/Users/Administrator/PycharmProjects/untitled1/screenshot'
+shutil.rmtree(rootdir)
+# 再新建一个空文件夹保存截图
+os.mkdir(rootdir)
