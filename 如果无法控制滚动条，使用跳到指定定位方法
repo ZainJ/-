@@ -1,0 +1,35 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys as key
+from time import sleep
+
+
+class TestClass():
+    def setup_class(self):
+        # self.br = webdriver.ChromeOptions()
+        # self.br.set_headless()
+        # dr = webdriver.Chrome(options=self.br)
+        self.dr = webdriver.Chrome()
+
+    def teardown_class(self):
+        self.dr.close()
+
+    def test_createClient(self):
+        self.dr.get('http://localhost:27880/webconsole/client')
+        self.dr.maximize_window()
+        sleep(1)
+        create_button = self.dr.find_element_by_xpath(
+            '//*[@id="root"]/div/main/div/div/div[2]/div/div[1]/div[1]/a/button')
+        create_button.click()
+        sleep(2)
+        target = self.dr.find_element_by_id('eds-input-24')
+        self.dr.execute_script('arguments[0].scrollIntoView();', target)
+        sleep(10)
+        self.dr.find_element_by_xpath('//*[@id="eds-input-24"]').send_keys('http://www.baidu.com5')
+        create = self.dr.find_element_by_xpath('//*[@id="root"]/div/main/div/div/div[2]/div/div[3]/button[2]')
+        self.dr.execute_script('arguments[0].scrollIntoView();', create)
+        create.click()
+        sleep(20)
